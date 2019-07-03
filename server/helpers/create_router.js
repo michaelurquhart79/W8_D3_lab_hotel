@@ -42,6 +42,24 @@ const createRouter = function (collection) {
     });
   });
 
+  router.put("/:id", (req, res) => {
+    const id = req.params.id;
+    const updateData = req.body;
+    collection.findOneAndUpdate(
+    {_id: ObjectID(id)},
+    {$set: updateData},
+    {returnOriginal: false}
+    )
+  .then((result) => {
+    res.json(result.value)
+    })
+  .catch((err) => {
+    console.error(err);
+    res.status(500);
+    res.json({status: 500, error: err});
+    });
+  });
+
   return router;
 
 };
